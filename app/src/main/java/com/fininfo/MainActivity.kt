@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         numberList = (1..100).toList()
-        callAdapter(numberList)
+        callAdapter("all")
         clickFun()
     }
 
@@ -24,28 +24,29 @@ class MainActivity : AppCompatActivity() {
             oddTv.setOnClickListener {
                 backgroundChange(oddTv, evenTv, primeTv, fibonacciTv)
                 val oddNumbers = numberList.filter { it % 2 != 0 }
-                callAdapter(oddNumbers)
+                callAdapter("odd")
             }
             evenTv.setOnClickListener {
                 backgroundChange(evenTv, oddTv, primeTv, fibonacciTv)
                 val evenNumbers = (2..100 step 2).toList()
-                callAdapter(evenNumbers)
+                callAdapter("even")
             }
             primeTv.setOnClickListener {
                 backgroundChange(primeTv, oddTv, evenTv, fibonacciTv)
-                callAdapter(getPrimes(100))
+                callAdapter("prime")
             }
 
             fibonacciTv.setOnClickListener {
                 backgroundChange(fibonacciTv, oddTv, evenTv, primeTv)
-                callAdapter(getFibonacci(100))
+                callAdapter("fibonacci")
             }
         }
     }
 
-    private fun callAdapter(numbers: List<Int>) {
+    private fun callAdapter(type:String) {
         binding.apply {
-            adapter = NumberAdapter(numbers)
+            val numbers = (1..100).map { NumberItem(it, NumberUtils.getNumberType(it)) }
+            adapter = NumberAdapter(numbers,type)
             recyclerView.layoutManager = GridLayoutManager(this@MainActivity, 4)
             recyclerView.adapter = adapter
         }
@@ -63,28 +64,5 @@ class MainActivity : AppCompatActivity() {
         four.setTextColor(resources.getColor(R.color.black))
     }
 
-    fun getFibonacci(limit: Int): List<Int> {
-        val list = mutableListOf(0, 1)
-        while (true) {
-            val next = list[list.size - 1] + list[list.size - 2]
-            if (next > limit) break
-            list.add(next)
-        }
-        return list
-    }
 
-    fun getPrimes(limit: Int): List<Int> {
-        val primes = BooleanArray(limit + 1) { true }
-        primes[0] = false
-        primes[1] = false
-
-        for (i in 2..limit) {
-            if (primes[i]) {
-                for (j in i * i..limit step i) {
-                    primes[j] = false
-                }
-            }
-        }
-        return (2..limit).filter { primes[it] }
-    }
 }

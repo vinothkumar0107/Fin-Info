@@ -1,11 +1,13 @@
 package com.fininfo
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.fininfo.databinding.NumberAdapterBinding
 
-class NumberAdapter(var numberList: List<Int>) :
+class NumberAdapter(private val numberList: List<NumberItem>,var type:String) :
     RecyclerView.Adapter<NumberAdapter.NumberViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NumberViewHolder {
@@ -14,22 +16,47 @@ class NumberAdapter(var numberList: List<Int>) :
     }
 
     override fun onBindViewHolder(holder: NumberViewHolder, position: Int) {
-        holder.apply {
+        val item = numberList[position]
+        holder.number.text = item.value.toString()
 
-            onBind(numberList, position)
+
+        if(type.equals("odd",ignoreCase = true)){
+            if (item.value % 2 != 0) {
+                holder.number.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.odd_color))
+            }else{
+                holder.number.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.black))
+            }
+        }else if(type.equals("even",ignoreCase = true)){
+            if(item.value % 2 == 0){
+                holder.number.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.even_color))
+            }else{
+                holder.number.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.black))
+            }
+        }else if(type.equals("prime",ignoreCase = true)){
+            if(NumberUtils.isPrime(item.value)){
+                holder.number.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.prime_color))
+            }else{
+                holder.number.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.black))
+            }
+        } else if(type.equals("fibonacci",ignoreCase = true)){
+            if(NumberUtils.isFibonacci(item.value)){
+                holder.number.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.fibno_color))
+            }else{
+                holder.number.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.black))
+            }
+        }else {
+            holder.number.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.black))
         }
+
     }
 
     override fun getItemCount(): Int {
         return numberList.size
     }
 
-    class NumberViewHolder(var view: NumberAdapterBinding) : RecyclerView.ViewHolder(view.root) {
-        fun onBind(numberList: List<Int>, position: Int) {
-            view.apply {
-                number.text = numberList[position].toString()
 
-            }
+    class NumberViewHolder(var view: NumberAdapterBinding) : RecyclerView.ViewHolder(view.root) {
+        var number = view.number
         }
-    }
+
 }

@@ -3,4 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="app_color">#E2009688</color>
+
+
+    <color name="even_color">#9C27B0</color>
+    <color name="prime_color">#F44336</color>
+    <color name="fibno_color">#4CAF50</color>
+    <color name="odd_color">#FFC107</color>
 </resources>
