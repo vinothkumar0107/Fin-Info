@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Fin Info</string>
+    <string name="fin_info">Fin Info </string>
+    <string name="odd_number">Odd Numbers</string>
+    <string name="even_number">Even Numbers</string>
+    <string name="prime_number">Prime Numbers</string>
+    <string name="fibonacci_number">Fibonacci Numbers</string>
+</resources>
